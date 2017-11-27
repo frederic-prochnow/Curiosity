@@ -2,5 +2,6 @@ terrain_11x9.txt
 prog2.prg
 11
 N
-5 5
+5
+5
 O

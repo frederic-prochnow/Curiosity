@@ -1,6 +1,7 @@
-terrain_11x9_2
+terrain_11x9.txt
 prog2.prg
 10
 N
-6 5
+6
+5
 O

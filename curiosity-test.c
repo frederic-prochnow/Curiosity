@@ -78,10 +78,13 @@ int main(int argc, char ** argv) {
   Programme prog;
   erreur_terrain errt;
   erreur_programme errp;
-  /*etat_inter etat;
-  resultat_inter res;*/
+  etat_inter etat;
+  resultat_inter res;
   
   char *fichier = NULL;
+	int x,y,nbPas,cpt;
+	char orient;
+	char ligne [ 128 ];
 
   if (argc < 2) {
   	printf("Usage:  %s <fichier>\n\n", argv[0]);
@@ -107,7 +110,7 @@ int main(int argc, char ** argv) {
    perror (fichier);
    exit(1);
   }
-	char ligne [ 128 ];
+	
   /* Initialisation de l'environnement : lecture du terrain,
      initialisation de la position du robot */
 	fgets ( ligne, sizeof ligne, f );
@@ -118,8 +121,45 @@ int main(int argc, char ** argv) {
   /* Lecture du programme */
 	fgets ( ligne, sizeof ligne, f );
 	printf("Programme : %s\n", ligne);
-  //errp = lire_programme(&prog, ligne);
-  //gestion_erreur_programme(errp);
+  errp = lire_programme(&prog, ligne);
+  gestion_erreur_programme(errp);
 
+	/* Initialisation de l'état */
+	fgets ( ligne, sizeof ligne, f );
+  printf("Nombre de pas : %s\n", ligne);
+  nbPas = atoi(ligne);
+  cpt = 0;
+  init_etat(&etat);
+  do {
+    res = exec_pas(&prog, &envt, &etat);
+    /* Affichage du terrain et du robot */
+    afficher_envt(&envt);
+		cpt++;
+  } while(res == OK_ROBOT || cpt == nbPas);
+
+	fgets ( ligne, sizeof ligne, f );
+  printf("Resultat attentu :");
+	if(strcmp(ligne,"N") == 0 || strcmp(ligne,"F") == 0){
+		fgets ( ligne, sizeof ligne, f ); x= atoi(ligne);
+		fgets ( ligne, sizeof ligne, f ); y= atoi(ligne);
+		fgets ( ligne, sizeof ligne, f ); orient = ligne;
+		printf("Le robot est située %d %d dans le sens %s",x,y,orient);
+  }
+  if(strcmp(ligne,"N") == 0 ){
+		printf(" Le robot est sur une position normal à l'interieur du terrain\n");
+		if(res == OK_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
+	}else if(strcmp(ligne,"F") == 0){ 
+		printf(" Le programme est terminé\n");
+		if(res == ARRET_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
+  }else if(strcmp(ligne,"S") == 0){ 
+		printf(" Le robot est sorti du terrain\n");
+		if(res == SORTIE_ROBOT) printf("\n OK \n");
+  }else if(strcmp(ligne,"O") == 0){ 
+		printf(" Le robot a rencontré un obstacle\n");
+		if(res == CRASH_ROBOT) printf("\n OK \n");
+  }else if(strcmp(ligne,"P") == 0){ 
+		printf(" Le robot est tombé dans l'eau\n");
+		if(res == PLOUF_ROBOT) printf("\n OK \n");
+  }
 	return 1;
 }
