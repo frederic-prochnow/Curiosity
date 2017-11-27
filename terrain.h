@@ -28,6 +28,7 @@ typedef enum {
   ERREUR_HAUTEUR_INCORRECTE
 } erreur_terrain;
 
+
 /* Lecture d'un terrain dans un fichier de nom nom_f
    Résultats :
    t le terrain lu

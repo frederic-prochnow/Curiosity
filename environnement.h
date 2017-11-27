@@ -11,6 +11,7 @@ typedef struct {
   Terrain t;
 } Environnement;
 
+
 /* Initialise l'environnement envt :
    - lit le terrain dans le fichier fichier_terrain
    - initialise le robot : coordonnées initiales lues dans le fichier

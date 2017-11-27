@@ -24,7 +24,7 @@ void gestion_erreur_terrain(erreur_terrain e) {
     printf("Erreur lecture du terrain : hauteur incorrecte\n");
     exit(1);
   case ERREUR_CARACTERE_INCORRECT:
-    printf("Erreur lecture du terrain : caractère incorrect\n");
+    printf("Erreur lecture du terrain : caractÃ¨re incorrect\n");
     exit(1);
   case ERREUR_LIGNE_TROP_LONGUE:
     printf("Erreur lecture du terrain : ligne trop longue\n");
@@ -60,10 +60,10 @@ void gestion_erreur_programme(erreur_programme e) {
     printf("Erreur lecture du programme : erreur d'ouverture du fichier\n");
     exit(2);
   case ERREUR_BLOC_NON_FERME:
-    printf("Erreur lecture du programme : bloc non fermé\n");
+    printf("Erreur lecture du programme : bloc non fermÃ©\n");
     exit(2);
   case ERREUR_FERMETURE_BLOC_EXCEDENTAIRE:
-    printf("Erreur lecture du programme : fermeture de bloc excédentaire\n");
+    printf("Erreur lecture du programme : fermeture de bloc excÃ©dentaire\n");
     affichage_position_programme(e);
     exit(2);
   case ERREUR_COMMANDE_INCORRECTE:
@@ -78,41 +78,48 @@ int main(int argc, char ** argv) {
   Programme prog;
   erreur_terrain errt;
   erreur_programme errp;
-  etat_inter etat;
-  resultat_inter res;
+  /*etat_inter etat;
+  resultat_inter res;*/
   
-  if (argc < 3) {
-    printf("Usage: %s <terrain> <programme>\n", argv[0]);
-    return 1;
+  char *fichier = NULL;
+
+  if (argc < 2) {
+  	printf("Usage:  %s <fichier>\n\n", argv[0]);
+    exit(1);
+  } else {
+    int arg=1;
+		while (arg < argc) {
+    	if (fichier == NULL) {
+      	fichier = argv[arg];
+        arg++;
+        continue;
+      } else {
+      	printf ("Trop de fichiers sur la ligne de commande!\n");
+        exit(1);
+     	}
+		}
   }
 
+  printf ("Ouverture de %s\n", fichier);
+  FILE* f = fopen (fichier, "r");
+  if (!f) {
+   printf ("Erreur Ã  l'ouverture du fichier `%s'\n", fichier);
+   perror (fichier);
+   exit(1);
+  }
+	char ligne [ 128 ];
   /* Initialisation de l'environnement : lecture du terrain,
      initialisation de la position du robot */
-  errt = initialise_environnement(&envt, argv[1]);
+	fgets ( ligne, sizeof ligne, f );
+	printf("Terrain : %s\n", ligne);
+  errt = initialise_environnement(&envt, ligne);
   gestion_erreur_terrain(errt);
 
   /* Lecture du programme */
-  errp = lire_programme(&prog, argv[2]);
-  gestion_erreur_programme(errp);
+	fgets ( ligne, sizeof ligne, f );
+	printf("Programme : %s\n", ligne);
+  //errp = lire_programme(&prog, ligne);
+  //gestion_erreur_programme(errp);
 
-  /* Initialisation de l'état */
-  init_etat(&etat);
-  do {
-    res = exec_pas(&prog, &envt, &etat);
-    /* Affichage du terrain et du robot */
-    afficher_envt(&envt);
-  } while(res == OK_ROBOT);
-
-  /* Affichage du résultat */
-  switch(res) {
-  case OK_ROBOT: printf("Robot sur une case libre, programme non terminé (ne devrait pas arriver)\n"); break;
-  case SORTIE_ROBOT: printf("Le robot est sorti :-)\n"); break;
-  case ARRET_ROBOT: printf("Robot sur une case libre, programme terminé :-/\n"); break;
-  case PLOUF_ROBOT: printf("Le robot est tombé dans l'eau :-(\n"); break;
-  case CRASH_ROBOT: printf("Le robot s'est écrasé sur un rocher X-(\n"); break;
-  case ERREUR_PILE_VIDE: printf("ERREUR : pile vide\n"); break;
-  case ERREUR_ADRESSAGE: printf("ERREUR : erreur d'adressage\n"); break;
-  case ERREUR_DIVISION_PAR_ZERO: printf("ERREUR : division par 0\n"); break;
-  }
-  return 1;
+	return 1;
 }
