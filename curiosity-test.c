@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void gestion_erreur_terrain(erreur_terrain e) {
   switch(e) {
@@ -142,8 +143,8 @@ int main(int argc, char ** argv) {
 	if(strcmp(ligne,"N") == 0 || strcmp(ligne,"F") == 0){
 		fgets ( ligne, sizeof ligne, f ); x= atoi(ligne);
 		fgets ( ligne, sizeof ligne, f ); y= atoi(ligne);
-		fgets ( ligne, sizeof ligne, f ); orient = ligne;
-		printf("Le robot est située %d %d dans le sens %s",x,y,orient);
+		fgets ( ligne, sizeof ligne, f ); orient = ligne[0];
+		printf("Le robot est située %d %d dans le sens %c",x,y,orient);
   }
   if(strcmp(ligne,"N") == 0 ){
 		printf(" Le robot est sur une position normal à l'interieur du terrain\n");
