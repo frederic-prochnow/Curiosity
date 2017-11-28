@@ -1,4 +1,4 @@
 terrain_11x9.txt
-test_prog_O.prg
+test_prog_Bug2.prg
 10
 O
