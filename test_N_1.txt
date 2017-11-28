@@ -1,5 +1,5 @@
 terrain_11x9.txt
-prog2.prg
+test_prog_N.prg
 10
 N
 6
