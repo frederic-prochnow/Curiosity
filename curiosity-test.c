@@ -94,6 +94,7 @@ int main(int argc, char ** argv) {
 	int x,y,nbPas,cpt;
 	char orient;
 	char ligne [ 128 ];
+  char resultat [ 128];
 
   if (argc < 2) {
   	printf("Usage:  %s <fichier>\n\n", argv[0]);
@@ -147,28 +148,30 @@ int main(int argc, char ** argv) {
 		cpt++;
   } while(res == OK_ROBOT || cpt == nbPas);
 
-	fgets ( ligne, sizeof ligne, f );
-	search( ligne);
+	fgets ( resultat, sizeof resultat, f );
+	search( resultat);
   printf("Resultat attentu :");
+  // informations complementaire
 	if(strcmp(ligne,"N") == 0 || strcmp(ligne,"F") == 0){
 		fgets ( ligne, sizeof ligne, f );search( ligne); x= atoi(ligne);
 		fgets ( ligne, sizeof ligne, f );search( ligne); y= atoi(ligne);
 		fgets ( ligne, sizeof ligne, f );search( ligne); orient = ligne[0];
 		printf("Le robot est située %d %d dans le sens %c.\n",x,y,orient);
   }
-  if(strcmp(ligne,"N") == 0 ){
+	// resultat
+  if(strcmp(resultat,"N") == 0 ){
 		printf("Le robot est sur une position normal à l'interieur du terrain\n");
-		if(res == OK_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
-	}else if(strcmp(ligne,"F") == 0){ 
+		if((res == ARRET_ROBOT || res == OK_ROBOT )) printf("\n OK \n");
+	}else if(strcmp(resultat,"F") == 0){ 
 		printf("Le programme est terminé\n");
-		if(res == ARRET_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
-  }else if(strcmp(ligne,"S") == 0){ 
+		if((res == ARRET_ROBOT || res == OK_ROBOT )) printf("\n OK \n");
+  }else if(strcmp(resultat,"S") == 0){ 
 		printf("Le robot est sorti du terrain\n");
 		if(res == SORTIE_ROBOT) printf("\n OK \n");
-  }else if(strcmp(ligne,"O") == 0){ 
+  }else if(strcmp(resultat,"O") == 0){ 
 		printf("Le robot a rencontré un obstacle\n");
 		if(res == CRASH_ROBOT) printf("\n OK \n");
-  }else if(strcmp(ligne,"P") == 0){ 
+  }else if(strcmp(resultat,"P") == 0){ 
 		printf("Le robot est tombé dans l'eau\n");
 		if(res == PLOUF_ROBOT) printf("\n OK \n");
   }

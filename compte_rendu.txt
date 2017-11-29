@@ -1,12 +1,24 @@
 TP 7 :
 
 Pour tester mon interprete que j'ai créer (curiosity-test.c), j'ai créer un fichier de test pour chaque type d'événement de fin géré par le programme associé.
-Pour S, j'ai par exemple créer un programme qui faisait sortir curiosity en dehors du terrain.
+--detail
+Pour N, j'ai créer un programme qui fait arreter curiosity sur une position normale.
+Pour F, j'ai créer un programme qui doit se finir.
+Pour S, j'ai créer un programme qui fait sortir curiosity en dehors du terrain.
+Pour O, j'ai créer un programme qui fait entrer en collision le rover avec un obstacle.
+Pour P, j'ai créer un programme qui fait tomber dans l'eau le rover.
+
 
 Pour les interpretes 0-9
---> BUG
+
+Connaissant le résultat attendu pour chaque test, j'ai exectuer les 5 test précédent enoncé et regarder si le resultat attendu était au rendez-vous.
+Soit les interpretes n° (0,2,3,4,5,6,7,8,9) sont bons et 
+     les interpretes n° (1 car il a rencontre un obstacle) sont mauvais.
+De manière plus résumé, lorsque le OK n'était pas afficher, il s'agit d'une erreur.
+
 
 Pour le test de robustesse :
+
 Dans le premier cas j'ai créer un fichier de test avec un nom de fichier errronée, alors le programme s'arrête et affiche un message.
 
 ----------------------------------------------------------------------------------
