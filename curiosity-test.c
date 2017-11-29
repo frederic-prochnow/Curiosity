@@ -54,6 +54,14 @@ void affichage_position_programme(erreur_programme e) {
   printf("^\n");
 }
 
+static void search(char *chaine)
+{
+	char *p = strchr(chaine, '\n');
+	if (p){
+		*p = 0;
+	}
+}
+
 void gestion_erreur_programme(erreur_programme e) {
   switch(e.type_err) {
   case OK_PROGRAMME: break;
@@ -115,7 +123,7 @@ int main(int argc, char ** argv) {
   /* Initialisation de l'environnement : lecture du terrain,
      initialisation de la position du robot */
 	fgets ( ligne, sizeof ligne, f );
-	printf("Terrain : %s\n", ligne);
+	printf("Terrain : %s", ligne);
   errt = initialise_environnement(&envt, ligne);
   gestion_erreur_terrain(errt);
 
@@ -127,6 +135,7 @@ int main(int argc, char ** argv) {
 
 	/* Initialisation de l'état */
 	fgets ( ligne, sizeof ligne, f );
+  search( ligne);
   printf("Nombre de pas : %s\n", ligne);
   nbPas = atoi(ligne);
   cpt = 0;
@@ -139,27 +148,28 @@ int main(int argc, char ** argv) {
   } while(res == OK_ROBOT || cpt == nbPas);
 
 	fgets ( ligne, sizeof ligne, f );
+	search( ligne);
   printf("Resultat attentu :");
 	if(strcmp(ligne,"N") == 0 || strcmp(ligne,"F") == 0){
-		fgets ( ligne, sizeof ligne, f ); x= atoi(ligne);
-		fgets ( ligne, sizeof ligne, f ); y= atoi(ligne);
-		fgets ( ligne, sizeof ligne, f ); orient = ligne[0];
-		printf("Le robot est située %d %d dans le sens %c",x,y,orient);
+		fgets ( ligne, sizeof ligne, f );search( ligne); x= atoi(ligne);
+		fgets ( ligne, sizeof ligne, f );search( ligne); y= atoi(ligne);
+		fgets ( ligne, sizeof ligne, f );search( ligne); orient = ligne[0];
+		printf("Le robot est située %d %d dans le sens %c.\n",x,y,orient);
   }
   if(strcmp(ligne,"N") == 0 ){
-		printf(" Le robot est sur une position normal à l'interieur du terrain\n");
+		printf("Le robot est sur une position normal à l'interieur du terrain\n");
 		if(res == OK_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
 	}else if(strcmp(ligne,"F") == 0){ 
-		printf(" Le programme est terminé\n");
+		printf("Le programme est terminé\n");
 		if(res == ARRET_ROBOT && x==envt.r.x && y==envt.r.y) printf("\n OK \n");
   }else if(strcmp(ligne,"S") == 0){ 
-		printf(" Le robot est sorti du terrain\n");
+		printf("Le robot est sorti du terrain\n");
 		if(res == SORTIE_ROBOT) printf("\n OK \n");
   }else if(strcmp(ligne,"O") == 0){ 
-		printf(" Le robot a rencontré un obstacle\n");
+		printf("Le robot a rencontré un obstacle\n");
 		if(res == CRASH_ROBOT) printf("\n OK \n");
   }else if(strcmp(ligne,"P") == 0){ 
-		printf(" Le robot est tombé dans l'eau\n");
+		printf("Le robot est tombé dans l'eau\n");
 		if(res == PLOUF_ROBOT) printf("\n OK \n");
   }
 	return 1;

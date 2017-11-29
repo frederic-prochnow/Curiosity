@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <string.h>
 
+static void search(char *chaine)
+{
+	char *p = strchr(chaine, '\n');
+	if (p){
+		*p = 0;
+	}
+}
+
 erreur_terrain lire_terrain(char * nom_fichier, Terrain * t, int * x, int * y) {
   FILE * f;
   int l, h; // Dimensions du terrain
@@ -16,7 +24,8 @@ erreur_terrain lire_terrain(char * nom_fichier, Terrain * t, int * x, int * y) {
   char ligne[DIM_MAX];
   Case c;
   
-  // Ouverture du fichier en lecture
+  // Ouverture du fichier en lecture	
+	search(nom_fichier);
   f = fopen(nom_fichier, "r");
   if (f == NULL) {
     return ERREUR_FICHIER;

@@ -2,17 +2,28 @@
 #include "environnement.h"
 
 #include <stdio.h>
+#include <string.h>
 
 /* Initialise l'environnement envt :
    - lit le terrain dans le fichier fichier_terrain
    - initialise le robot : coordonnées initiales lues dans le fichier
    terrain, orientation initiale vers l'est
 */
+
+static void search(char *chaine)
+{
+	char *p = strchr(chaine, '\n');
+	if (p){
+		*p = 0;
+	}
+}
+
 erreur_terrain initialise_environnement(Environnement * envt,
                                         char * fichier_terrain) {
   erreur_terrain errt;
   int x, y; // Position initiale du robot
 
+	search(fichier_terrain);
   errt = lire_terrain(fichier_terrain, &(envt->t), &x, &y);
 
   if (errt != OK) {

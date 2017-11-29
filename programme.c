@@ -11,6 +11,14 @@ int est_chiffre(char c) {
   return (c >= '0') && (c <= '9');
 }
 
+static void search(char *chaine)
+{
+	char *p = strchr(chaine, '\n');
+	if (p){
+		*p = 0;
+	}
+}
+
 /* Lecture d'un programme prog dans le fichier nom_fichier */
 erreur_programme lire_programme(Programme * prog, char * nom_fichier) {
   FILE * fprog;
@@ -20,6 +28,7 @@ erreur_programme lire_programme(Programme * prog, char * nom_fichier) {
   PileEntiers pile; // Pile pour lier les ouvertures/fermetures de bloc
 
   // Ouverture du fichier en lecture
+	search(nom_fichier);
   fprog = fopen(nom_fichier, "r");
   if (fprog == NULL) {
     res.type_err = ERREUR_FICHIER_PROGRAMME;

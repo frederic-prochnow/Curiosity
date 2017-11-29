@@ -1,0 +1,31 @@
+TP 7 :
+
+Pour tester mon interprete que j'ai créer (curiosity-test.c), j'ai créer un fichier de test pour chaque type d'événement de fin géré par le programme associé.
+Pour S, j'ai par exemple créer un programme qui faisait sortir curiosity en dehors du terrain.
+
+Pour les interpretes 0-9
+--> BUG
+
+Pour le test de robustesse :
+Dans le premier cas j'ai créer un fichier de test avec un nom de fichier errronée, alors le programme s'arrête et affiche un message.
+
+----------------------------------------------------------------------------------
+Lecture de test_lect_prog.txt
+Terrain : terrain_11x9.txt
+Programme : test_prog_W.prg
+
+Erreur lecture du programme : erreur d'ouverture du fichier
+----------------------------------------------------------------------------------
+
+Dans le second cas j'ai cérer un fichier de test correct mais avec un programme associé contennat des commandes inconnues, le programme s'arrête, affiche un message d'erreur et dit où le problème à eu lieu.
+
+----------------------------------------------------------------------------------
+Ouverture de test_exec_prog.txt
+Terrain : terrain_11x9.txt
+Programme : test_prog_Bug2.prg
+
+Erreur lecture du programme : commande incorrecte
+Ligne 1, colonne 4 :
+AAAWX
+   ^
+----------------------------------------------------------------------------------
